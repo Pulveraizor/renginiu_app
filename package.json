@@ -1,0 +1,25 @@
+{
+  "name": "renginiu_app",
+  "version": "1.0.0",
+  "description": "This is an app developed for the final task of the KTMC JavaScript Developer module",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pulveraizor/renginiu_app.git"
+  },
+  "keywords": [
+    "KTMC"
+  ],
+  "author": "Benas Juskus",
+  "license": "Beerware",
+  "bugs": {
+    "url": "https://github.com/Pulveraizor/renginiu_app/issues"
+  },
+  "homepage": "https://github.com/Pulveraizor/renginiu_app#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
