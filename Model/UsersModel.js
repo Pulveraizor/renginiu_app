@@ -6,7 +6,7 @@ const UsersModel = {
       try {
         const [rows, fields] = await db.execute(
           'INSERT INTO users (email, password, role_id, created) VALUES (?, ?, ?, NOW())',
-          [email, password, roleId || 2] // Ensure roleId is null if undefined
+          [email, password, roleId || 1]
         );
         return rows;
       } catch (error) {
@@ -14,20 +14,18 @@ const UsersModel = {
       }
     },
   
-    // Method to get user by email
     async getUserByEmail(email) {
       try {
         const [rows, fields] = await db.execute(
           'SELECT * FROM users WHERE email = ?',
           [email]
         );
-        return rows[0]; // Return the first user found
+        return rows[0];
       } catch (error) {
         throw error;
       }
     },
   
-    // Add more methods as needed (updateUser, deleteUser, etc.)
   };
   
   module.exports = UsersModel;

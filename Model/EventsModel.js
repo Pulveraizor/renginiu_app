@@ -17,7 +17,11 @@ const EventsModel = {
 
     // Get all events
     async getAllEvents() {
-        const sql = 'SELECT * FROM events';
+        const sql = `SELECT events.*, event_categories.name AS event_category_name, AVG(ratings.rating) AS avg_rating
+                FROM events
+                JOIN event_categories ON events.category_id = event_categories.id
+                LEFT JOIN ratings ON events.id = ratings.event_id
+                GROUP BY events.id`;
         const [rows] = await dbConfig.query(sql);
         return rows;
     },
@@ -33,10 +37,20 @@ const EventsModel = {
         const [rows] = await dbConfig.query(sql, [id]);
         return rows[0];
     },
+    async searchEvents(query) {
+        const sql = 'SELECT * FROM events WHERE name LIKE ? OR description LIKE ?';
+        const [rows] = await dbConfig.query(sql, [`%${query}%`, `%${query}%`]);
+        return rows;
+    },
     async getEventByDate(date) {
         const sql = 'SELECT * FROM events WHERE date = ?';
         const [rows] = await dbConfig.query(sql, [date]);
         return rows[0];
+    },
+    async getAllCategories() {
+        const sql = 'SELECT * FROM event_categories';
+        const [rows] = await dbConfig.query(sql);
+        return rows;
     },
 
     // Update an event
