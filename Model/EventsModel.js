@@ -7,41 +7,51 @@ const pool = mysql.createPool(dbConfig);
 // Promisify the pool query function
 const promisePool = pool.promise();
 
-class EventsModel {
+const EventsModel = {
     // Create an event
-    static async createEvent(name, category_id, date, created_by) {
-        const sql = 'INSERT INTO events (name, category_id, date, created_by) VALUES (?, ?, ?, ?)';
-        const [result] = await promisePool.query(sql, [name, category_id, date, created_by]);
+    async createEvent(name, category_id, date, created_by, description) {
+        const sql = 'INSERT INTO events (name, category_id, date, created_by, description) VALUES (?, ?, ?, ?, ?)';
+        const [result] = await dbConfig.query(sql, [name, category_id, date, created_by, description]);
         return result;
-    }
+    },
 
     // Get all events
-    static async getAllEvents() {
+    async getAllEvents() {
         const sql = 'SELECT * FROM events';
-        const [rows] = await promisePool.query(sql);
+        const [rows] = await dbConfig.query(sql);
         return rows;
-    }
+    },
 
     // Get an event by ID
-    static async getEventById(id) {
+    async getEventById(id) {
         const sql = 'SELECT * FROM events WHERE id = ?';
-        const [rows] = await promisePool.query(sql, [id]);
+        const [rows] = await dbConfig.query(sql, [id]);
         return rows[0];
-    }
+    },
+    async getEventByCreator(id) {
+        const sql = 'SELECT * FROM events WHERE created_by = ?';
+        const [rows] = await dbConfig.query(sql, [id]);
+        return rows[0];
+    },
+    async getEventByDate(date) {
+        const sql = 'SELECT * FROM events WHERE date = ?';
+        const [rows] = await dbConfig.query(sql, [date]);
+        return rows[0];
+    },
 
     // Update an event
-    static async updateEvent(id, name, category_id, date, created_by) {
+    async updateEvent(id, name, category_id, date, created_by) {
         const sql = 'UPDATE events SET name = ?, category_id = ?, date = ?, created_by = ? WHERE id = ?';
         const [result] = await promisePool.query(sql, [name, category_id, date, created_by, id]);
         return result;
-    }
+    },
 
     // Delete an event
-    static async deleteEvent(id) {
+    async deleteEvent(id) {
         const sql = 'DELETE FROM events WHERE id = ?';
         const [result] = await promisePool.query(sql, [id]);
         return result;
-    }
+    },
 }
 
 module.exports = EventsModel;

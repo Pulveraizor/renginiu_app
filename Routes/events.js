@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const EventsController = require('../Controller/EventsController');
 
 // Create event endpoint
-router.post('/create', (req, res) => {
-    const { name, category_id, date, created_by } = req.body;
-    // Event creation logic here
-    res.json({ message: 'Event created successfully' });
-});
+router.post('/create', EventsController.createEvent);
+router.post('/delete/{id}', EventsController.deleteEvent);
 
 module.exports = router;

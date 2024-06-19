@@ -5,6 +5,9 @@ const path = require('path');
 const mysql = require('mysql2');
 const dbConfig = require('./Config/dbConfig');
 
+const session = require('express-session');
+
+
 const apiRoutes = require('./routes/api');
 const authRoutes = require('./routes/auth');
 const eventRoutes = require('./routes/events');
@@ -15,21 +18,17 @@ const app = express();
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Create a MySQL connection pool
-const pool = mysql.createPool(dbConfig);
+app.use(session({
+    secret: 'your_secret_key',
+    resave: false,
+    saveUninitialized: false
+  }));
 
-// Endpoint to test database connection
-app.get('/test-db', (req, res) => {
-    pool.query('SELECT 1 + 1 AS result', (error, results) => {
-        if (error) {
-            return res.status(500).json({ error: error.message });
-        }
-        res.json({ result: results[0].result });
-    });
-});
-app.use(express.static('Public'));
+
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api', apiRoutes);
 app.use('/auth', authRoutes);
 app.use('/events', eventRoutes);

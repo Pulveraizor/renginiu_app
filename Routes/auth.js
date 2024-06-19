@@ -1,18 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const UsersController = require('../Controller/UsersController');
 
 // Register endpoint
-router.post('/register', (req, res) => {
-    const { email, password } = req.body;
-    // Registration logic here
-    res.json({ message: 'User registered successfully' });
-});
+router.post('/register', UsersController.registerUser);
 
 // Login endpoint
-router.post('/login', (req, res) => {
-    const { email, password } = req.body;
-    // Login logic here
-    res.json({ message: 'User logged in successfully' });
-});
+router.post('/login', UsersController.loginUser);
 
 module.exports = router;
