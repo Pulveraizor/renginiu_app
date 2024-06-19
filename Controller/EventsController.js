@@ -34,13 +34,22 @@ const EventsController = {
   async searchEvents(req, res) {
     const { query } = req.params;
     try {
-      const events = await EventsModel.searchEvents(query);
-      res.status(200).json( events );
+        const events = await EventsModel.searchEvents(query);
+        res.status(200).json( events );
     } catch (error) {
-      console.error('Error searching events:', error);
-      res.status(500).json({ error: 'Internal server error' });
+        console.error('Error searching events:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
   },
+  async searchByDate(req, res) {
+    const { date } = req.params;
+    try {
+        const events = await EventsModel.getEventByDate(date);
+        res.status(200).json( events );
+    } catch (error) {
+        console.error('Error searching events:', error);
+        }
+    },
   async getAllCategories(req, res) {
     try {
       const categories = await EventsModel.getAllCategories();

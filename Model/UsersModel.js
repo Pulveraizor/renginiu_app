@@ -1,7 +1,6 @@
 const db = require('../Config/dbConfig');
 
 const UsersModel = {
-    // Method to create a new user
     async createUser(email, password, roleId) {
       try {
         const [rows, fields] = await db.execute(
